@@ -263,6 +263,14 @@ Tiga prakiraan sebelum training telah dikunci:
 9. Test set dipakai satu kali di `evaluate.py` setelah pilihan final dikunci.
 10. Analisis kesalahan mencakup sedikitnya lima contoh penting, misalnya negasi, slang, teks ambigu, atau teks sangat pendek.
 
+### Checkpoint Preprocessing
+
+`IndonesianTextNormalizer` telah selesai dan diuji. Normalizer menangani lowercase, whitespace, placeholder, pemanjangan huruf, serta negasi informal tanpa menghapus negasi formal.
+
+Normalizer mendukung list, Series, DataFrame satu kolom, dan NumPy array; menolak DataFrame multi-kolom; serta lolos serialisasi pickle dan joblib. Hasil lengkap tersedia di `reports/preprocessing_findings.md`.
+
+Status test saat checkpoint: 9 test transformer dan 16 test proyek lulus.
+
 ## 9\. Pengujian dan validasi
 
 ### Test mekanis minimum
