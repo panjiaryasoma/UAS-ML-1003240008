@@ -79,7 +79,7 @@ Selain itu, audit tambahan dilakukan untuk mendeteksi:
 - placeholder token;
 - pemanjangan huruf;
 - teks sangat pendek;
-- URL, mention, dan hashtag.
+- URL, mention, hashtag, dan emoji.
 
 ---
 
@@ -106,6 +106,7 @@ Selain itu, audit tambahan dilakukan untuk mendeteksi:
 | URL | 0 |
 | Mention | 0 |
 | Hashtag | 0 |
+| Emoji rows | 0 |
 
 Tiga indikator duplikasi tidak dianggap sebagai tiga kekotoran berbeda. Ketiganya menjelaskan satu masalah yang sama, yaitu keberadaan teks identik atau berulang.
 
@@ -182,6 +183,12 @@ Tidak ditemukan teks identik yang memiliki label berbeda. Dengan demikian, tidak
 ### 6.3 Tidak ada missing value standar
 
 Kolom `text` dan `label` tidak memiliki nilai hilang. Karena itu, imputasi tidak diperlukan untuk dataset ini.
+
+### 6.4 Pemeriksaan emoji
+
+Pemeriksaan karakter emoji dilakukan menggunakan rentang karakter Unicode emoji. Tidak ditemukan baris yang mengandung emoji pada dataset aktual.
+
+Karena jumlahnya nol, emoji tidak diperlakukan sebagai kekotoran data dan tidak memerlukan tindakan kurasi. Pemeriksaan ini tetap dicatat untuk menunjukkan bahwa karakter nonteks yang berpotensi membawa sinyal sentimen telah diaudit.
 
 ---
 
