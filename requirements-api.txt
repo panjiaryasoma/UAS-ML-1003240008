@@ -1,7 +1,9 @@
-fastapi==<versi-aktual>
-uvicorn==<versi-aktual>
-pydantic==<versi-aktual>
-scikit-learn==<versi-yang-dipakai-training>
-numpy==<versi-aktual>
-scipy==<versi-aktual>
-joblib==<versi-aktual>
+-r requirements.txt
+
+# REST API runtime
+fastapi==0.140.0
+uvicorn==0.51.0
+pydantic==2.13.4
+
+# API testing
+httpx2==2.7.0
