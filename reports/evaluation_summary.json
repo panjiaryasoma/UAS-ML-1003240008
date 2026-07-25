@@ -1,0 +1,44 @@
+{
+  "model_version": "sentimenid-20260725T181613Z",
+  "evaluated_at_utc": "2026-07-25T18:39:35+00:00",
+  "dataset": {
+    "name": "IndoNLU SmSA",
+    "files": [
+      "train_preprocess.tsv",
+      "valid_preprocess.tsv"
+    ]
+  },
+  "selected_model": "calibrated_linear_svc",
+  "labels": [
+    "negative",
+    "neutral",
+    "positive"
+  ],
+  "split": {
+    "modeling_rows": 12179,
+    "train_rows": 9743,
+    "test_rows": 2436,
+    "random_state": 42,
+    "test_set_status": "evaluated_once"
+  },
+  "metrics": {
+    "accuracy": 0.8891625615763546,
+    "f1_macro": 0.8554829102748593,
+    "f1_weighted": 0.888721077608589,
+    "test_rows": 2436,
+    "correct_rows": 2166,
+    "incorrect_rows": 270,
+    "probabilities_available": true,
+    "prediction_distribution": {
+      "negative": 753,
+      "neutral": 242,
+      "positive": 1441
+    },
+    "log_loss": 0.312220317743167
+  },
+  "training_runtime": {
+    "python": "3.12.7",
+    "scikit_learn": "1.9.0",
+    "pandas": "3.0.5"
+  }
+}
