@@ -1,0 +1,7 @@
+fastapi==<versi-aktual>
+uvicorn==<versi-aktual>
+pydantic==<versi-aktual>
+scikit-learn==<versi-yang-dipakai-training>
+numpy==<versi-aktual>
+scipy==<versi-aktual>
+joblib==<versi-aktual>

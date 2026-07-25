@@ -1,0 +1,24 @@
+# Virtual environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Test cache
+.pytest_cache/
+
+# Raw and generated data
+data/*
+!data/.gitkeep
+
+# Trained model artifacts
+models/*
+!models/.gitkeep
+!models/metadata.json
+
+# Environment and editor files
+.env
+.vscode/
+.idea/
