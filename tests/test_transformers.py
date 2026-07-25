@@ -1,5 +1,6 @@
 import pickle
 
+import numpy as np
 import pandas as pd
 
 from src.transformers import IndonesianTextNormalizer
@@ -69,3 +70,38 @@ def test_normalizer_can_be_pickled_for_sklearn_pipeline():
     ])
 
     assert result == ["laugh enak"]
+
+
+def test_normalizer_accepts_single_column_dataframe():
+    normalizer = IndonesianTextNormalizer()
+
+    df = pd.DataFrame({
+        "text": [
+            "  GAK   BAGUS  ",
+            "__laugh__ ENAAAK",
+        ],
+    })
+
+    result = normalizer.fit_transform(df)
+
+    assert result == [
+        "tidak bagus",
+        "laugh enak",
+    ]
+
+
+def test_normalizer_accepts_single_column_numpy_array():
+    normalizer = IndonesianTextNormalizer()
+
+    values = np.array([
+        ["  BELUM   SELESAI  "],
+        ["mantapppp"],
+    ], dtype=object)
+
+    result = normalizer.fit_transform(values)
+
+    assert result == [
+        "belum selesai",
+        "mantap",
+    ]
+
