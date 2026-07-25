@@ -1,0 +1,4 @@
+model,mean_cv_f1_macro,std_cv_f1_macro,mean_fit_time_seconds,total_search_seconds,best_params
+calibrated_linear_svc,0.8502289898904907,0.009328386759431767,4.530808401107788,10.63423279998824,"{""estimator__classifier__C"": 0.5, ""estimator__tfidf__ngram_range"": [1, 2]}"
+logistic_regression,0.8478773720776609,0.007199985477195547,2.5182321071624756,6.798781199962832,"{""classifier__C"": 2.0, ""tfidf__ngram_range"": [1, 2]}"
+multinomial_nb,0.7544356028597063,0.014869007185211244,1.1475140571594238,7.973643700010143,"{""classifier__alpha"": 0.5, ""tfidf__ngram_range"": [1, 1]}"
