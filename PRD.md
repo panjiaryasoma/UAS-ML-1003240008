@@ -71,8 +71,10 @@ Hasil minimum yang dianggap kredibel adalah:
 
 1. **Selesai:** dataset dikonfirmasi belum pernah dipakai pada Modul 2-6.
 2. **Selesai:** jumlah baris, label, format, sumber publik, lisensi, dan metode unduh terverifikasi.
-3. **Berjalan:** exact duplicate telah ditemukan; audit harus membuktikan sedikitnya dua kekotoran nyata tambahan tanpa merekayasa temuan.
-4. **Diputuskan:** API menerima kontrak bahasa `id` tanpa mengklaim melakukan deteksi bahasa otomatis.
+3. **Selesai:** audit kualitas data menemukan tiga kekotoran nyata yang berbeda: 81 exact duplicate, 45 baris dengan placeholder token, dan 103 baris dengan huruf berulang.
+4. **Selesai:** data modeling dikurasi secara deterministik menjadi 12.179 baris, lalu dibagi stratified 80:20 menjadi 9.743 train dan 2.436 test dengan `random_state=42`.
+5. **Selesai:** empat grafik EDA aktual telah dihasilkan dari train set atau audit full-data sesuai fungsi masing-masing, dan lima unit test EDA lulus.
+6. **Diputuskan:** API menerima kontrak bahasa `id` tanpa mengklaim melakukan deteksi bahasa otomatis.
 
 ## 8. Keputusan gate
 
@@ -80,7 +82,7 @@ Hasil minimum yang dianggap kredibel adalah:
 
 Alasan: Case C memenuhi seluruh bentuk deliverable yang diminta dan mempunyai jalur implementasi yang lebih sederhana daripada A/B tanpa menurunkan ketelitian teknis.
 
-**Catatan v0.2:** D-01 dan D-02 telah ditutup. Implementasi diizinkan dengan IndoNLU SmSA sebagai dataset final dan atribusi lisensi yang membedakan dataset dari repository.
+**Catatan v0.3:** tahap data dan EDA telah dikunci. Tiga temuan kualitas data terdokumentasi, split kanonik sudah dibentuk, empat grafik aktual tersedia, dan tiga prakiraan sebelum training tetap dipertahankan untuk diuji pada Tahap 3.
 
 ---
 
@@ -91,17 +93,18 @@ Alasan: Case C memenuhi seluruh bentuk deliverable yang diminta dan mempunyai ja
 | Atribut | Nilai |
 |---|---|
 | Judul | PRD UAS Machine Learning End-to-End - SentimenID API |
-| Versi | 0.2 (execution baseline) |
+| Versi | 0.3 (EDA checkpoint) |
 | Tanggal | 25 Juli 2026 |
 | Pemilik | Panji Arya Soma |
 | Tim | Individu |
-| Status | In progress - implementasi diotorisasi |
+| Status | In progress - data dan EDA selesai; text normalizer berikutnya |
 | Proyek/repo | `UAS-ML-1003240008` |
 
 ### Changelog
 
 | Versi | Tanggal | Perubahan |
 |---|---|---|
+| 0.3 | 25 Juli 2026 | Mengunci hasil audit dan EDA aktual: 81 exact duplicate, 45 placeholder token, 103 elongated-word rows, 12.179 data modeling, split 9.743/2.436, empat PNG aktual, serta `tests/test_eda.py` dengan lima test lulus. |
 | 0.2 | 25 Juli 2026 | Mengunci IndoNLU SmSA, repo/NIM, Python 3.12.7, metode unduh terverifikasi, dan arsitektur seleksi model; pin package serving tetap menjadi pekerjaan implementasi. |
 | 0.1 | 24 Juli 2026 | Baseline awal untuk Case C, termasuk scope, risiko, requirement, dan acceptance criteria. |
 
@@ -198,28 +201,31 @@ Nilai dalam contoh di atas hanyalah bentuk respons, bukan target hasil model.
 
 Dataset final adalah **IndoNLU SmSA** (`smsa_doc-sentiment-prosa`) dari organisasi IndoNLP. `src/load_data.py` mengunduh `train_preprocess.tsv` dan `valid_preprocess.tsv` dari repository resmi, memverifikasi identitas blob Git keduanya, lalu menggabungkannya menjadi 12.260 baris berlabel. Test resmi IndoNLU tidak digunakan karena labelnya disamarkan.
 
-Profil awal menghasilkan 7.151 positive, 3.830 negative, dan 1.279 neutral; tidak ada missing value standar dan terdapat 81 exact duplicate. Fakta ini belum menjadi keputusan pembersihan final sampai audit kualitas data selesai.
+Profil aktual menghasilkan 7.151 positive, 3.830 negative, dan 1.279 neutral. Tidak ditemukan missing value standar, blank text, konflik label, URL, mention, maupun hashtag. Audit menemukan 81 exact duplicate, 45 baris dengan placeholder token, 103 baris dengan huruf berulang, serta 346 teks dengan panjang maksimal dua kata.
+
+Exact duplicate dihapus secara deterministik sebelum split agar pasangan `text-label` identik tidak tersebar ke train dan test. Setelah deduplikasi tersisa 12.179 baris, kemudian dibagi stratified 80:20 menjadi 9.743 train dan 2.436 test dengan `random_state=42`. Placeholder token dan huruf berulang tidak dihapus pada tahap audit; keduanya akan ditangani secara konsisten oleh text normalizer di dalam pipeline. Teks maksimal dua kata dipertahankan karena pendek tidak otomatis berarti tidak valid.
 
 Dataset card resmi IndoNLU menyatakan lisensi benchmark dataset adalah MIT, sedangkan repository/code IndoNLU menyatakan Apache-2.0. README wajib mencatat keduanya secara terpisah agar tidak menganggap lisensi code sebagai lisensi data. Dataset dikonfirmasi bukan sintetis dan belum pernah dipakai pada Modul 2-6.
 
-### Grafik minimum yang direncanakan
+### Grafik EDA yang diimplementasikan
 
-1. Bar chart distribusi label sentimen.
-2. Bar chart missing/blank text dan nilai tidak valid.
-3. Distribusi panjang teks per kelas.
-4. Kata/frasa paling sering pada kelas positif setelah stopword removal untuk visualisasi.
-5. Kata/frasa paling sering pada kelas netral.
-6. Kata/frasa paling sering pada kelas negatif.
+1. `reports/label_distribution.png` — distribusi tiga label pada train set.
+2. `reports/missing_values_by_column.png` — jumlah nilai hilang per kolom pada dataset audit.
+3. `reports/text_length_by_label.png` — boxplot panjang teks per label pada train set.
+4. `reports/top_terms_by_label.png` — tiga panel istilah teratas untuk negative, neutral, dan positive setelah stopword removal khusus visualisasi.
 
-Grafik 4-6 dapat menjadi tiga PNG terpisah agar pola tiap kelas tidak tertutup oleh kelas lain.
+Keempat PNG tersebut memenuhi minimum UAS. Grafik ciri linguistik tiga kelas digabung dalam satu figure agar tetap mudah dibandingkan tanpa menambah file kosmetik. Setiap grafik masih wajib diberi tafsiran 2–3 kalimat di laporan final.
 
-### Kandidat kekotoran yang harus diverifikasi, bukan diasumsikan
+### Temuan kualitas data aktual dan keputusan
 
-- teks kosong, whitespace-only, atau nilai null;
-- baris duplikat dan teks identik dengan label berbeda;
-- URL, mention, hashtag, emoji, atau markup;
-- ejaan informal seperti `gak`, `ga`, `gk`, `bgt`, dan huruf berulang;
-- label yang tidak konsisten atau di luar tiga kelas.
+| Temuan | Jumlah | Deteksi | Keputusan |
+|---|---:|---|---|
+| Exact duplicate | 81 baris | `df.duplicated().sum()` | Hapus pasangan `text-label` identik sebelum split untuk mencegah kebocoran antarpartisi. |
+| Placeholder token | 45 baris | Regex `__[a-z_]+__` | Pertahankan baris; normalisasi token secara konsisten di dalam pipeline karena dapat membawa sinyal emosi. |
+| Huruf berulang | 103 baris | Regex `([a-z])\1{2,}` | Pertahankan baris; lakukan normalisasi terbatas di dalam pipeline agar bentuk seperti `enaaak` tidak menjadi vocabulary terpisah. |
+| Teks maksimal dua kata | 346 baris | Jumlah token `<= 2` | Dipertahankan dan diperlakukan sebagai risiko konteks terbatas, bukan otomatis data kotor. |
+
+Audit juga mengonfirmasi nilai nol untuk missing text/label, blank text, konflik label, leading/trailing space, repeated whitespace, unknown-like text, URL, mention, dan hashtag. Nilai nol tetap dicatat sebagai bukti pemeriksaan, tetapi tidak diklaim sebagai kekotoran yang ditemukan.
 
 ### Tiga prakiraan sebelum model dilatih
 
@@ -232,8 +238,8 @@ Ketiganya adalah hipotesis, bukan kesimpulan. Mereka harus ditinjau ulang dengan
 ## 8. Desain modeling dan evaluasi
 
 1. Audit schema, label, blank, exact duplicate, dan konflik label dilakukan sebagai kualifikasi data sebelum split; tahap ini tidak mempelajari representasi fitur.
-2. Setelah kurasi baris yang dapat dipertanggungjawabkan, data dibagi 80:20 melalui `train_test_split(..., stratify=y, random_state=42)`.
-3. Test set dikunci. EDA yang memengaruhi desain model, pemilihan slang, dan tuning hanya memakai train set.
+2. Setelah exact duplicate dihapus, 12.179 baris dibagi 80:20 melalui `train_test_split(..., stratify=y, random_state=42)`, menghasilkan 9.743 train dan 2.436 test.
+3. Test set dikunci. EDA yang memengaruhi desain model, pemilihan slang, dan tuning hanya memakai train set; audit schema dan kualitas non-learned tetap boleh memakai dataset penuh.
 4. Normalisasi yang dapat dipickling dan TF-IDF dengan kandidat unigram/bigram berada di dalam pipeline.
 5. Tiga pencarian CV kecil dijalankan terpisah untuk Multinomial Naive Bayes, Logistic Regression, dan calibrated LinearSVC karena struktur parameternya tidak identik.
 6. Semua kandidat memakai fold `StratifiedKFold(n_splits=5, shuffle=True, random_state=42)` dan metrik utama **F1-macro** yang sama.
@@ -293,6 +299,7 @@ UAS-ML-1003240008/
 │   └── main.py
 ├── tests/
 │   ├── test_load_data.py
+│   ├── test_eda.py
 │   ├── test_transformers.py
 │   ├── test_api.py
 │   └── test_behavior.py
@@ -314,7 +321,7 @@ UAS-ML-1003240008/
 |---|---|
 | Dataset SmSA pernah dipakai di Modul 2-6 | Ditutup: dataset Modul 2-6 seluruhnya sintetis buatan pemilik; SmSA belum pernah digunakan. |
 | Lisensi dataset tertukar dengan lisensi repository | Cantumkan MIT untuk dataset berdasarkan dataset card resmi dan Apache-2.0 secara terpisah untuk repository/code IndoNLU. |
-| Tidak menemukan tiga kekotoran nyata | Perluas inspeksi secara jujur atau pilih dataset yang lebih kaya variasi, bukan menciptakan kekotoran. |
+| Tiga kekotoran nyata tidak cukup kuat | Ditutup: audit mengonfirmasi exact duplicate, placeholder token, dan huruf berulang sebagai tiga temuan berbeda; teks sangat pendek hanya dicatat sebagai risiko tambahan. |
 | F1 bagus tetapi prediksi negasi buruk | Tinjau bigram, normalisasi, dan contoh error; jangan menyamarkan kelemahan di laporan. |
 | API gagal karena artefak belum ada | README memberi urutan `load_data` -> `train` -> `uvicorn`; health endpoint memberi status jelas. |
 | Requirements serving berubah | Pin versi API persis dan uji dari virtual environment bersih. |
@@ -329,13 +336,14 @@ UAS-ML-1003240008/
 | D-03 | Isi NIM untuk nama repo | CLOSED - 1003240008 |
 | D-04 | Tetapkan versi Python dan dependensi berdasarkan environment aktual | RESOLVED FOR EXECUTION - Python 3.12.7 dikunci; versi package serving dipin setelah API tervalidasi |
 | D-05 | Tentukan apakah kandidat SmSA dipakai atau diganti setelah inspeksi data | CLOSED - SmSA digunakan |
+| D-06 | Kunci hasil audit, kurasi, split, dan grafik EDA | CLOSED - 81 duplicate dihapus; 12.179 data modeling dibagi 9.743/2.436; empat PNG dan lima test EDA tersedia |
 
 ## 14. Urutan delivery
 
-1. Selesaikan audit kualitas data, dokumentasikan sedikitnya tiga kekotoran nyata, lalu lakukan kurasi baris deterministik.
-2. Kunci split stratified 80:20 dan tiga prakiraan sebelum training.
-3. Buat EDA train-only, grafik, tafsiran, dan keputusan preprocessing.
-4. Implementasikan serta uji custom text normalizer.
+1. **Selesai:** audit kualitas data, tiga kekotoran nyata, dan kurasi baris deterministik.
+2. **Selesai:** split stratified 80:20 dan tiga prakiraan sebelum training dikunci.
+3. **Selesai pada sisi kode:** EDA train-only, empat grafik, dan keputusan preprocessing awal. Tafsiran 2–3 kalimat per grafik masih menjadi pekerjaan laporan.
+4. **Berikutnya:** implementasikan serta uji custom text normalizer.
 5. Training dan perbandingan tiga kandidat deployable melalui 5-fold CV pada train set.
 6. Kunci model, lakukan evaluasi test set sekali, simpan artefak dan metadata.
 7. Bangun FastAPI, validasi Pydantic, logging, dan contoh curl.
