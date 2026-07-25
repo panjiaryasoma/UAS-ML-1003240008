@@ -1,7 +1,9 @@
 import pickle
 
+import joblib
 import numpy as np
 import pandas as pd
+import pytest
 
 from src.transformers import IndonesianTextNormalizer
 
@@ -104,4 +106,28 @@ def test_normalizer_accepts_single_column_numpy_array():
         "belum selesai",
         "mantap",
     ]
+
+
+def test_normalizer_rejects_dataframe_with_multiple_columns():
+    normalizer = IndonesianTextNormalizer()
+    df = pd.DataFrame({
+        "text": ["bagus"],
+        "extra": ["data"],
+    })
+
+    with pytest.raises(
+        ValueError,
+        match="hanya menerima DataFrame satu kolom",
+    ):
+        normalizer.fit_transform(df)
+
+
+def test_normalizer_round_trip_with_joblib(tmp_path):
+    normalizer = IndonesianTextNormalizer()
+    path = tmp_path / "normalizer.joblib"
+
+    joblib.dump(normalizer, path)
+    restored = joblib.load(path)
+
+    assert restored.transform(["GAK ENAAAK"]) == ["tidak enak"]
 
