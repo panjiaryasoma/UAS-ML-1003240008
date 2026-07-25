@@ -18,6 +18,7 @@ def test_quality_summary_detects_hidden_issues():
             "   ",
             "__laugh__ mantapppp",
             "enaaak sekali",
+            "bagus banget 😍",
         ],
         "label": [
             "positive",
@@ -25,6 +26,7 @@ def test_quality_summary_detects_hidden_issues():
             "positive",
             "negative",
             "neutral",
+            "positive",
             "positive",
             "positive",
         ],
@@ -40,6 +42,7 @@ def test_quality_summary_detects_hidden_issues():
     assert counts["blank_or_whitespace_text"] == 1
     assert counts["placeholder_token"] == 1
     assert counts["elongated_word_rows"] == 2
+    assert counts["contains_emoji"] == 1
 
 
 def test_prepare_modeling_data_removes_exact_duplicates():
