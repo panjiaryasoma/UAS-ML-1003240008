@@ -1,0 +1,90 @@
+{
+  "model_version": "sentimenid-20260725T181613Z",
+  "generated_at_utc": "2026-07-25T18:16:13+00:00",
+  "dataset": {
+    "name": "IndoNLU SmSA",
+    "files": [
+      "train_preprocess.tsv",
+      "valid_preprocess.tsv"
+    ]
+  },
+  "runtime": {
+    "python": "3.12.7",
+    "scikit_learn": "1.9.0",
+    "pandas": "3.0.5"
+  },
+  "split": {
+    "modeling_rows": 12179,
+    "train_rows": 9743,
+    "locked_test_rows": 2436,
+    "test_size": 0.2,
+    "stratified": true,
+    "random_state": 42,
+    "test_set_status": "locked_until_evaluate.py"
+  },
+  "model_selection": {
+    "scoring": "f1_macro",
+    "cv": {
+      "type": "StratifiedKFold",
+      "n_splits": 5,
+      "shuffle": true,
+      "random_state": 42
+    },
+    "calibration_cv": 3,
+    "selected_model": "calibrated_linear_svc",
+    "classes": [
+      "negative",
+      "neutral",
+      "positive"
+    ],
+    "candidate_results": [
+      {
+        "model": "calibrated_linear_svc",
+        "mean_cv_f1_macro": 0.8502289898904907,
+        "std_cv_f1_macro": 0.009328386759431767,
+        "mean_fit_time_seconds": 4.530808401107788,
+        "total_search_seconds": 10.63423279998824,
+        "best_params": {
+          "estimator__classifier__C": 0.5,
+          "estimator__tfidf__ngram_range": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "model": "logistic_regression",
+        "mean_cv_f1_macro": 0.8478773720776609,
+        "std_cv_f1_macro": 0.007199985477195547,
+        "mean_fit_time_seconds": 2.5182321071624756,
+        "total_search_seconds": 6.798781199962832,
+        "best_params": {
+          "classifier__C": 2.0,
+          "tfidf__ngram_range": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "model": "multinomial_nb",
+        "mean_cv_f1_macro": 0.7544356028597063,
+        "std_cv_f1_macro": 0.014869007185211244,
+        "mean_fit_time_seconds": 1.1475140571594238,
+        "total_search_seconds": 7.973643700010143,
+        "best_params": {
+          "classifier__alpha": 0.5,
+          "tfidf__ngram_range": [
+            1,
+            1
+          ]
+        }
+      }
+    ]
+  },
+  "pipeline": {
+    "normalizer": "IndonesianTextNormalizer",
+    "vectorizer": "TfidfVectorizer",
+    "artifact_contains_full_preprocessing": true
+  }
+}
