@@ -9,6 +9,12 @@ Proyek UAS Machine Learning end-to-end untuk mengklasifikasikan teks Bahasa Indo
 - **Repository:** `UAS-ML-1003240008`
 - **Kasus:** Case C — Klasifikasi Sentimen Teks Bahasa Indonesia
 
+## Berkas Pengumpulan
+
+- [Laporan PDF](Laporan_UAS_ML_SentimenID_Panji_Arya_Soma.pdf)
+- [Link Video Demonstrasi](LINK_VIDEO.txt)
+
+
 ## Masalah Bisnis
 
 Media, marketplace, dan layanan digital dapat menerima banyak ulasan atau komentar berbahasa Indonesia. Pemeriksaan manual membutuhkan waktu, sulit diskalakan, dan dapat menghasilkan keputusan yang tidak konsisten.
