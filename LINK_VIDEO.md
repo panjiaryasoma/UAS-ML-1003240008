@@ -1,11 +1,11 @@
-VIDEO DEMONSTRASI UAS MACHINE LEARNING
+## VIDEO DEMONSTRASI UAS MACHINE LEARNING
 
 Nama : Panji Arya Soma
 
 NIM  : 1003240008
 
 Link video:
-\[Link Video Demonstrasi](https://drive.google.com/drive/folders/1RUGMwnFFgn4XHd2VEE67y1_nbw135CWZ?usp=drive_link)
+- [Link Video Demonstrasi](https://drive.google.com/drive/folders/1RUGMwnFFgn4XHd2VEE67y1_nbw135CWZ?usp=drive_link)
 
 
 Isi demonstrasi:
