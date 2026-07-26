@@ -5,7 +5,7 @@ NIM  : 1003240008
 
 Link video:
 
-\[Link Video Demonstrasi](https://drive.google.com/drive/folders/1RUGMwnFFgn4XHd2VEE67y1\_nbw135CWZ?usp=drive\_link)
+\[Link Video Demonstrasi](https://drive.google.com/drive/folders/1RUGMwnFFgn4XHd2VEE67y1_nbw135CWZ?usp=drive_link)
 
 
 Isi demonstrasi:
