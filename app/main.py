@@ -6,6 +6,8 @@ import logging
 import os
 from pathlib import Path
 from typing import Any
+from datetime import datetime, timezone
+from time import perf_counter
 
 from fastapi import FastAPI, HTTPException, Request
 import joblib
@@ -207,6 +209,8 @@ def create_app(
         payload: PredictionRequest,
         request: Request,
     ) -> PredictionResponse:
+        start_time = perf_counter()
+
         model = getattr(request.app.state, "model", None)
         metadata = getattr(request.app.state, "metadata", None)
         classes = getattr(request.app.state, "classes", [])
@@ -263,13 +267,25 @@ def create_app(
         }
         confidence = probabilities[prediction]
 
+        latency_ms = (perf_counter() - start_time) * 1000
+        timestamp_utc = datetime.now(timezone.utc).isoformat()
+
         LOGGER.info(
-            "prediction_completed text_length=%d language=%s "
-            "prediction=%s confidence=%.6f",
+            "prediction_completed "
+            "timestamp_utc=%s "
+            "latency_ms=%.3f "
+            "text_length=%d "
+            "language=%s "
+            "prediction=%s "
+            "confidence=%.6f "
+            "model_version=%s",
+            timestamp_utc,
+            latency_ms,
             len(payload.text),
             payload.language.value,
             prediction,
             confidence,
+            metadata["model_version"],
         )
 
         return PredictionResponse(
