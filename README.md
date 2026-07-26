@@ -12,7 +12,7 @@ Proyek UAS Machine Learning end-to-end untuk mengklasifikasikan teks Bahasa Indo
 ## Berkas Pengumpulan
 
 - [Laporan PDF](Laporan_UAS_ML_SentimenID_Panji_Arya_Soma.pdf)
-- [Link Video Demonstrasi](LINK_VIDEO.txt)
+- [Link Video Demonstrasi](LINK_VIDEO.md)
 
 
 ## Masalah Bisnis
